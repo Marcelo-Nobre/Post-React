@@ -22,23 +22,36 @@ export function Post({ author, publishedAt, content }) {
 
   })
 
-  function handleCreateNewComment() {
+  function handleCreateNewComment(event) {
     if (event.target.comment.value == '') {
       return
     }
-      //pra página não recarregar
-      event.preventDefault()
-      //pega o valor do textarea
-      const newCommentText = event.target.comment.value
-      //seta um novo valor e salva ele na váriavel comments ...comments é pra armazenar todos os valores anterires
-      setComments([...comments, newCommentText]);
-      //limpa o input
-      setNewCommentText('');
+    //pra página não recarregar
+    event.preventDefault()
+    //pega o valor do textarea
+    const newCommentText = event.target.comment.value
+    //seta um novo valor e salva ele na váriavel comments ...comments é pra armazenar todos os valores anterires
+    setComments([...comments, newCommentText]);
+    //limpa o input
+    setNewCommentText('');
   }
 
   //essa função faz o textarea escutar/refletir o que está acontecendo
-  function handleNewCommentChange() {
+  function handleNewCommentChange(event) {
     setNewCommentText(event.target.value);
+  }
+
+  //função onde vou passar a propiedade pro elemento filho 'comment'
+  //então inicio ela com um parametro comentário porque é oq eu vou querer apagar
+  function deleteComment(commentToDelete) {
+    //imutabilidade -> as variáveis não sofrem mutação, nós criamos um novo valor (um novo espaço na memória)
+    const commentsWithoutDeletedOne = comments.filter(comment => {
+      //mantem na lista os comentários diferentes do que eu quero deletar
+      return comment !== commentToDelete
+    })
+    //aqui eu passo a função setComments() com o parametro comment
+    setComments(commentsWithoutDeletedOne)
+
   }
 
   return (
@@ -87,7 +100,13 @@ export function Post({ author, publishedAt, content }) {
 
       <div className={styles.commentList}>
         {comments.map(comment => {
-          return <Comment key={comment} content={comment} />
+          return (
+            <Comment
+              key={comment}
+              content={comment}
+              onDeleteComment={deleteComment}
+            />
+          )
         })}
       </div>
     </article>
