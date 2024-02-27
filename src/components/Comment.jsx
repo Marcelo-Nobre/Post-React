@@ -4,6 +4,7 @@ import { Avatar } from './Avatar';
 
 export function Comment({ content, onDeleteComment }) {
   //criando função pra deletar comentário
+  //essa função vai herdar o elemento do componente Post onDeleteComment() e boto como argumento o conteudo
   function handleDeleteComment() {
     //passo a propiedade com o conteudo do comentário (content)
     onDeleteComment(content)

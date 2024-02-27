@@ -23,9 +23,6 @@ export function Post({ author, publishedAt, content }) {
   })
 
   function handleCreateNewComment(event) {
-    if (event.target.comment.value == '') {
-      return
-    }
     //pra página não recarregar
     event.preventDefault()
     //pega o valor do textarea
@@ -41,6 +38,11 @@ export function Post({ author, publishedAt, content }) {
     setNewCommentText(event.target.value);
   }
 
+  function handleNewCommentInvalid(event) {
+    event.target.setCustomValidity('')
+    event.target.setCustomValidity('Esse campo é onbrigatório')
+  }
+
   //função onde vou passar a propiedade pro elemento filho 'comment'
   //então inicio ela com um parametro comentário porque é oq eu vou querer apagar
   function deleteComment(commentToDelete) {
@@ -51,8 +53,9 @@ export function Post({ author, publishedAt, content }) {
     })
     //aqui eu passo a função setComments() com o parametro comment
     setComments(commentsWithoutDeletedOne)
-
   }
+
+  const isNewCommentInputEmpty = newCommentText.length === 0;
 
   return (
     <article className={styles.post}>
@@ -91,10 +94,12 @@ export function Post({ author, publishedAt, content }) {
           placeholder='Deixe um comentário'
           value={newCommentText}
           onChange={handleNewCommentChange}
+          onInvalid={handleNewCommentInvalid}
+          required
         />
 
         <footer>
-          <button type='submit'>Publicar</button>
+          <button type='submit' disabled={isNewCommentInputEmpty}>Publicar</button>
         </footer>
       </form>
 
