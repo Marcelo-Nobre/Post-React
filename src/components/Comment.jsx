@@ -1,13 +1,25 @@
 import { ThumbsUp, Trash } from '@phosphor-icons/react/dist/ssr';
 import styles from './Comment.module.css'
 import { Avatar } from './Avatar';
+import { useState } from 'react';
 
 export function Comment({ content, onDeleteComment }) {
+
+  const [likeCount, setLikeCount] = useState(0)
+
   //criando função pra deletar comentário
   //essa função vai herdar o elemento do componente Post onDeleteComment() e boto como argumento o conteudo
   function handleDeleteComment() {
     //passo a propiedade com o conteudo do comentário (content)
     onDeleteComment(content)
+  }
+
+  //função pra contar os likes
+  function handleLikeComment() {
+    //o state retorna o valor mais atual de setLikeCount
+    setLikeCount((state) => {
+      return state + 1
+    })
   }
 
   return (
@@ -35,9 +47,9 @@ export function Comment({ content, onDeleteComment }) {
         </div>
 
         <footer>
-          <button>
+          <button onClick={handleLikeComment}>
             <ThumbsUp />
-            Aplaudir <span>20</span>
+            Aplaudir <span>{likeCount}</span>
           </button>
         </footer>
       </div>
